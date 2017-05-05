@@ -7,12 +7,88 @@ from twisted.internet import stdio
 from time import sleep
 import pygame, pygame.surfarray
 from pygame.locals import *
+from math import sin, cos, degrees, radians
 
-alphabet=["A", "B", "-"]
 axiom = "A"
-rules = {"A":"B-B", 
-         "B":"A-"}
-rows = 10
+# rules = {"A":"CB", "B":"", "C": "AB",}
+# rules = {"A":"BC", "B":"C", "C": "AAB",}
+rules = {"A":"CB", 
+         "B":"",
+         "C": "AAB",
+}
+
+COL = (20, 200, 100)
+
+# def move_x(state):
+#     state[0] += 1
+
+# def 
+
+# operations = {
+#     "A": move_x,
+#     "B": lambda st: pygame.draw.line(
+#         st[2],
+#         COL,
+#         (st[0], st[1]),
+#         (st[0], st[1]+10)),
+#     "C": lambda st: pygame.draw.line(
+#         st[2],
+#         COL,
+#         (st[0], st[1]),
+#         (st[0]+10, st[1]+50)),
+# }
+
+def get_pos(length, x, y, angle):
+    """ Compute the next coords by moving """  
+    degrees = angle
+    to_rad = radians(degrees)
+    x_pos = round(cos(to_rad)*length+x)
+    y_pos = round(sin(to_rad)*length+y)
+
+    return (x_pos,y_pos)
+
+def pendown(state):
+    state[3] = True
+
+def penup(state):
+    state[3] = False
+
+def forward(state, distance):
+    new_x, new_y = get_pos(distance, state[0], state[1], state[4])
+    if state[3]: # pendown
+        pygame.draw.aaline(state[2], COL, (state[0], state[1]),
+                           (new_x, new_y))
+    state[0] = new_x
+    state[1] = new_y
+
+def backward(state, distance):
+    pass
+
+def right(state, angle):
+    r = state[4] + angle
+    if r > 360 :
+        state[4]= r - 360.0
+    elif r < 0 :
+        state[4]= r + 360.0  
+    else :
+        state[4] = r
+
+def left(state, angle):
+    r = state[4]- angle
+    if r > 360 :
+        state[4]= r - 360.0
+    elif r < 0 :
+        state[4] = r + 360.0  
+    else :
+        state[4] = r
+
+# operations = {
+#     "F": ,
+#     "B": ,
+#     "R": ,
+# }
+
+rows = 5
 
 class ChatboxProtocol(LineReceiver):
     """
@@ -32,7 +108,6 @@ class ChatboxProtocol(LineReceiver):
         # Ignore blank lines
         if not line: return
         exec(line, globals())
-        # self.sendLine(str(res))
 
     def connectionLost(self, reason):
         # stop the reactor, only
@@ -47,22 +122,24 @@ def loop(axiom):
             res += rules[letter]
     return res
 
-def draw_it(line, y, surf):
-    x = 0
-    for char in line:
-        if char == "A":
-            x += 20
-        elif char == "B":
-            surf.set_at((x, y), (20, 200, 100))
+def draw_it(line, surf):
+    #state   x  y  bg    pen   angle
+    state = [0, 0, surf, False, 0.0]
+    # for char in line:
+    #     operations[char](state)
+    pendown(state)
+    right(state, 60)
+    forward(state, 20)
+    left(state, 45)
+    forward(state, 100)
 
 def draw(surface, bg_surface):
     surface.blit(bg_surface, (0, 0))
-    res = []
     fordraw = axiom
-    for i in xrange(rows):
-        res.append(fordraw)
-        fordraw += loop(fordraw)
-        draw_it(res[i], i*2+1, surface)
+    # for i in xrange(rows):
+    #     fordraw += loop(fordraw)
+    draw_it(fordraw, surface)
+    
 
     pygame.display.flip()
     
@@ -79,6 +156,7 @@ def main():
     ev.start(1.0 / 10)
     stdio.StandardIO(ChatboxProtocol())
     reactor.run()
+    # draw(surface, bg_surface)
         
 if __name__ == '__main__':
     main()
