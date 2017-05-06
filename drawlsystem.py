@@ -19,23 +19,10 @@ rules = {"A":"CB",
 
 COL = (20, 200, 100)
 
-# def move_x(state):
-#     state[0] += 1
-
-# def 
-
 # operations = {
-#     "A": move_x,
-#     "B": lambda st: pygame.draw.line(
-#         st[2],
-#         COL,
-#         (st[0], st[1]),
-#         (st[0], st[1]+10)),
-#     "C": lambda st: pygame.draw.line(
-#         st[2],
-#         COL,
-#         (st[0], st[1]),
-#         (st[0]+10, st[1]+50)),
+#     "A": ,
+#     "B": ,
+#     "C": ,
 # }
 
 def get_pos(length, x, y, angle):
@@ -62,7 +49,8 @@ def forward(state, distance):
     state[1] = new_y
 
 def backward(state, distance):
-    pass
+    right(state, 180)
+    forward(state, distance)
 
 def right(state, angle):
     r = state[4] + angle
@@ -128,10 +116,16 @@ def draw_it(line, surf):
     # for char in line:
     #     operations[char](state)
     pendown(state)
-    right(state, 60)
-    forward(state, 20)
-    left(state, 45)
+    right(state, 80)
+    forward(state, 200)
+    # right(state, 180)
+    backward(state, 100)
+    right(state, 20)
     forward(state, 100)
+    # forward(state, 100)
+    # left(state, 45)
+    # forward(state, 500)
+    # backward(state, 200)
 
 def draw(surface, bg_surface):
     surface.blit(bg_surface, (0, 0))
