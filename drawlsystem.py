@@ -57,15 +57,25 @@ def left(state, angle):
     else :
         state[4] = r
 
-axiom = "PRRRFFF"
-rules = {"P":"PFF", 
-         "F":"FRF",
-         "R": "RF",
-}
 
+# rules = {"P":"PFF", 
+#          "F":"FRF",
+#          "R": "RF",
+# }
+
+# region divide
 # rules = {"P":"PFF", "F":"FRF", "R": "RF",}
-#rules = {"P":"PFF", "F":"FFR", "R": "",}
+# rules = {"P":"PFF", "F":"FFR", "R": "",}
 # rules = {"F":"FFRRF", "R": "FFFFF",}
+
+# rules = {"F":"FFRRBBF", "R": "FFFFF",} #barbed wire
+# rules = {"F":"FFRBBBF", "R": "FFFRF"} #stars
+# rules = {"F":"FRBBBFF", "R": "FFRRF"} #more stars
+# RRRRRRRRFFFFRRRRRRRRRFFFFRRRRRRRRRFFFF
+axiom = "PFFFRR"
+rules = {"R": "RRRFRFFRRRFL", "F": "FLFR"}
+
+
 
 operations = {
     "P": lambda x: pendown(x),
@@ -136,7 +146,7 @@ def main():
     bg_surface = pygame.Surface(size, pygame.SRCALPHA)
     bg_surface.fill((0, 0,0))
     ev = LoopingCall(draw, surface, bg_surface)
-    ev.start(1.0 / 10)
+    ev.start(1.0 / 2)
     stdio.StandardIO(ChatboxProtocol())
     reactor.run()
     # draw(surface, bg_surface)
