@@ -9,21 +9,8 @@ import pygame, pygame.surfarray
 from pygame.locals import *
 from math import sin, cos, degrees, radians
 
-axiom = "A"
-# rules = {"A":"CB", "B":"", "C": "AB",}
-# rules = {"A":"BC", "B":"C", "C": "AAB",}
-rules = {"A":"CB", 
-         "B":"",
-         "C": "AAB",
-}
-
 COL = (20, 200, 100)
 
-# operations = {
-#     "A": ,
-#     "B": ,
-#     "C": ,
-# }
 
 def get_pos(length, x, y, angle):
     """ Compute the next coords by moving """  
@@ -70,13 +57,26 @@ def left(state, angle):
     else :
         state[4] = r
 
-# operations = {
-#     "F": ,
-#     "B": ,
-#     "R": ,
-# }
+axiom = "PRRRFFF"
+rules = {"P":"PFF", 
+         "F":"FRF",
+         "R": "RF",
+}
 
-rows = 5
+# rules = {"P":"PFF", "F":"FRF", "R": "RF",}
+#rules = {"P":"PFF", "F":"FFR", "R": "",}
+# rules = {"F":"FFRRF", "R": "FFFFF",}
+
+operations = {
+    "P": lambda x: pendown(x),
+    "U": lambda x: penup(x),
+    "R": lambda x: right(x, 10),
+    "L": lambda x: left(x, 10),
+    "F": lambda x: forward(x, 20),
+    "B": lambda x: backward(x, 20),
+}
+
+generations = 5
 
 class ChatboxProtocol(LineReceiver):
     """
@@ -113,25 +113,14 @@ def loop(axiom):
 def draw_it(line, surf):
     #state   x  y  bg    pen   angle
     state = [0, 0, surf, False, 0.0]
-    # for char in line:
-    #     operations[char](state)
-    pendown(state)
-    right(state, 80)
-    forward(state, 200)
-    # right(state, 180)
-    backward(state, 100)
-    right(state, 20)
-    forward(state, 100)
-    # forward(state, 100)
-    # left(state, 45)
-    # forward(state, 500)
-    # backward(state, 200)
+    for char in line:
+        operations[char](state)
 
 def draw(surface, bg_surface):
     surface.blit(bg_surface, (0, 0))
     fordraw = axiom
-    # for i in xrange(rows):
-    #     fordraw += loop(fordraw)
+    for i in xrange(generations):
+        fordraw += loop(fordraw)
     draw_it(fordraw, surface)
     
 
