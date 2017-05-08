@@ -72,16 +72,57 @@ def left(state, angle):
 # rules = {"F":"FFRBBBF", "R": "FFFRF"} #stars
 # rules = {"F":"FRBBBFF", "R": "FFRRF"} #more stars
 # RRRRRRRRFFFFRRRRRRRRRFFFFRRRRRRRRRFFFF
-axiom = "PFFFRR"
-rules = {"R": "RRRFRFFRRRFL", "F": "FLFR"}
 
 
+# cool circles
+#state = [400, 400, surf, False, 0.0]
+# axiom = "PFFFR"
+# rules = {"R": "FRFFRRRFL", "F": "FLFR"}
+# "R": lambda x: right(x, 10),
+# "L": lambda x: left(x, 10),
+
+# cool circles
+#state = [400, 400, surf, False, 0.0]
+# axiom = "PFFFR"
+# rules = {"R": "FRFFRRRFL", "F": "FLFR"}
+# "R": lambda x: right(x, 10),
+# "L": lambda x: left(x, 10),
+
+# cool matrix like generation
+# "R": lambda x: right(x, 90),
+# "L": lambda x: left(x, 90),
+
+# squares
+# rules = {"R": "FRFFFRF", "F": "FRF"}
+# "R": lambda x: right(x, 90),
+# "L": lambda x: left(x, 90),
+
+# parallelepiped
+# "R": lambda x: right(x, 60),
+# "L": lambda x: left(x, 60),
+# axiom = "PFFR"
+# rules = {"R": "FRF", "F": "FFR"}
+
+#triangles
+#axiom = "PFFR"
+#rules = {"R": "FRF", "F": "FFRB"}
+# "R": lambda x: right(x, 60),
+# "L": lambda x: left(x, 60),
+
+#pythagorean tiling
+# axiom = "PFFR"
+# rules = {"R": "FRF", "F": "FFRB"}
+# "R": lambda x: right(x, 90),
+# "L": lambda x: left(x, 90),
+
+axiom = "PFFR"
+rules = {"R": "FRF", "F": "FFRB"}
 
 operations = {
     "P": lambda x: pendown(x),
     "U": lambda x: penup(x),
-    "R": lambda x: right(x, 10),
-    "L": lambda x: left(x, 10),
+    "R": lambda x: right(x, 90),
+    "L": lambda x: left(x, 90),
     "F": lambda x: forward(x, 20),
     "B": lambda x: backward(x, 20),
 }
@@ -122,7 +163,7 @@ def loop(axiom):
 
 def draw_it(line, surf):
     #state   x  y  bg    pen   angle
-    state = [0, 0, surf, False, 0.0]
+    state = [800, 150, surf, False, 0.0]
     for char in line:
         operations[char](state)
 
@@ -132,8 +173,6 @@ def draw(surface, bg_surface):
     for i in xrange(generations):
         fordraw += loop(fordraw)
     draw_it(fordraw, surface)
-    
-
     pygame.display.flip()
     
 def main():
