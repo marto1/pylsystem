@@ -57,12 +57,6 @@ def left(state, angle):
     else :
         state[4] = r
 
-
-# rules = {"P":"PFF", 
-#          "F":"FRF",
-#          "R": "RF",
-# }
-
 # region divide
 # rules = {"P":"PFF", "F":"FRF", "R": "RF",}
 # rules = {"P":"PFF", "F":"FFR", "R": "",}
@@ -114,20 +108,36 @@ def left(state, angle):
 # rules = {"R": "FRF", "F": "FFRB"}
 # "R": lambda x: right(x, 90),
 # "L": lambda x: left(x, 90),
+#
+# rules = {"R": "FRBBF", "F": "FFRB"} # kind of like tiling
+#
+# axiom = "PFFLB"
+# rules = {"R": "LFF", "F": "FFRB"}
 
-axiom = "PFFR"
-rules = {"R": "FRF", "F": "FFRB"}
+
+#fans
+# axiom = "PFFLB"
+# rules = {"R": "LFFF", "F": "FFRB"}
+# "R": lambda x: right(x, 120),
+# "L": lambda x: left(x, 120),
+
+# PFRRB
+
+
+axiom = "PFFLB"
+rules = {"R": "LFFF", "F": "FFRB"}
+
 
 operations = {
     "P": lambda x: pendown(x),
     "U": lambda x: penup(x),
-    "R": lambda x: right(x, 90),
-    "L": lambda x: left(x, 90),
+    "R": lambda x: right(x, 60),
+    "L": lambda x: left(x, 60),
     "F": lambda x: forward(x, 20),
-    "B": lambda x: backward(x, 20),
+    "B": lambda x: backward(x, 10),
 }
 
-generations = 5
+generations = 9
 
 class ChatboxProtocol(LineReceiver):
     """
@@ -163,11 +173,13 @@ def loop(axiom):
 
 def draw_it(line, surf):
     #state   x  y  bg    pen   angle
-    state = [800, 150, surf, False, 0.0]
+    state = [400, 150, surf, False, 0.0]
     for char in line:
-        operations[char](state)
+        if char in operations:
+            operations[char](state)
 
 def draw(surface, bg_surface):
+    global axiom
     surface.blit(bg_surface, (0, 0))
     fordraw = axiom
     for i in xrange(generations):
@@ -188,7 +200,7 @@ def main():
     ev.start(1.0 / 2)
     stdio.StandardIO(ChatboxProtocol())
     reactor.run()
-    # draw(surface, bg_surface)
+    #draw(surface, bg_surface)
         
 if __name__ == '__main__':
     main()
