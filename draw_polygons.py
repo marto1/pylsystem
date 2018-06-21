@@ -57,9 +57,10 @@ def left(state, angle):
     else :
         state[4] = r
 
-axiom = "PFRFRFRF"
+# axiom = "PFRFRFRF" #4
+axiom = "PFRFFRFRFF" #6
 rules = {}
-#rules = {"R": "LFFF", "F": "FFRB"}
+# rules = {"R": "LFFF", "F": "FFRB"}
 
 
 operations = {
