@@ -183,8 +183,26 @@ def draw(surface, bg_surface):
 # generate all
 from itertools import product
 
+def filter_useless_slots(x):
+    if (x.count('L') < 3) and (x.count('R') < 3):
+        return False
+    streak = ['', 0]
+    for action in x:
+        if streak[0] == '':
+            if action == 'R' or action == 'L':
+                streak = [action, 0]
+        if streak[0] == action:
+            streak[1] += 1
+            if streak[1] == 3:
+                return True
+        else:
+            if action == 'R' or action == 'L':
+                streak = [action, 0]
+    return False
+
 slot_counter = 0
 slots = list(product(" RL", repeat=9)) #10
+slots = filter(filter_useless_slots, slots)
 print "slots:", len(slots)
 
 #yield doesnt work :/
