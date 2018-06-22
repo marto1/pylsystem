@@ -134,7 +134,8 @@ def draw(surface, bg_surface):
         fordraw += loop(fordraw)
     draw_it(fordraw, surface)
     pygame.display.flip()
-    
+
+# just draw axiom
 # def main():
 #     pygame.init()
 #     screen_width, screen_height = (1024, 600)
@@ -148,18 +149,53 @@ def draw(surface, bg_surface):
 #     ev.start(1.0 / 2)
 #     stdio.StandardIO(ChatboxProtocol())
 #     reactor.run()
-from random import choice, randint
 
-def randomize():
-    global axiom
-    alpha = ["F"]
-    for i in range(9):
-        alpha.append(choice(["", "R", "L"]))
-        alpha.append("F")
-    alpha = "".join(alpha)
+# randomize polygon creation
+# from random import choice, randint
+
+# def randomize():
+#     global axiom
+#     alpha = ["F"]
+#     for i in range(9):
+#         alpha.append(choice(["", "R", "L"]))
+#         alpha.append("F")
+#     alpha = "".join(alpha)
+#     axiom = "P{}".format(alpha)
+#     print axiom
+
+
+# def main():
+#     pygame.init()
+#     screen_width, screen_height = (1024, 600)
+#     size = (screen_width,screen_height)
+#     clock = pygame.time.Clock()
+#     pygame.display.set_caption("L-system generate")
+#     surface = pygame.display.set_mode(size)
+#     bg_surface = pygame.Surface(size, pygame.SRCALPHA)
+#     bg_surface.fill((0, 0,0))
+#     ev = LoopingCall(draw, surface, bg_surface)
+#     ev.start(1.0 / 2)
+#     ev2 = LoopingCall(randomize)
+#     ev2.start(0.3)
+#     stdio.StandardIO(ChatboxProtocol())
+#     reactor.run()
+
+# generate all
+from itertools import product
+
+slot_counter = 0
+slots = list(product(" RL", repeat=9)) #10
+print "slots:", len(slots)
+
+#yield doesnt work :/
+def call_new():
+    global axiom, slot_counter, slots
+    if slot_counter == len(slots):
+        return
+    alpha = "F" + "F".join(slots[slot_counter])
     axiom = "P{}".format(alpha)
-    #("".join([choice(alpha) for i in xrange(n)]))
-    print axiom
+    # print axiom
+    slot_counter += 1
 
 
 def main():
@@ -172,9 +208,9 @@ def main():
     bg_surface = pygame.Surface(size, pygame.SRCALPHA)
     bg_surface.fill((0, 0,0))
     ev = LoopingCall(draw, surface, bg_surface)
-    ev.start(1.0 / 2)
-    ev2 = LoopingCall(randomize)
-    ev2.start(0.3)
+    ev.start(1.0 / 10)
+    ev2 = LoopingCall(call_new)
+    ev2.start(0.01)
     stdio.StandardIO(ChatboxProtocol())
     reactor.run()
 
