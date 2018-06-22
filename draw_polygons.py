@@ -184,20 +184,37 @@ def draw(surface, bg_surface):
 from itertools import product
 
 def filter_useless_slots(x):
-    if (x.count('L') < 3) and (x.count('R') < 3):
-        return False
-    streak = ['', 0]
-    for action in x:
-        if streak[0] == '':
-            if action == 'R' or action == 'L':
-                streak = [action, 0]
-        if streak[0] == action:
-            streak[1] += 1
-            if streak[1] == 3:
-                return True
-        else:
-            if action == 'R' or action == 'L':
-                streak = [action, 0]
+    coord = [0,0] #current coordinates
+    direction = 0 #of the vector
+    # directions: 0 - right
+    #             1 - down
+    #             2 - left
+    #             3 - up
+    s = "F{}F".format("F".join(x))
+    # print s
+    for slot in s:
+        # print coord, slot
+        if slot == "F":
+            if direction == 0:
+                coord[0] += 1
+            if direction == 2:
+                coord[0] -= 1
+            if direction == 3:
+                coord[1] += 1
+            if direction == 1:
+                coord[1] -= 1
+        if slot == "R": #change direction
+            if direction != 3:
+                direction +=1
+            else:
+                direction = 0
+        if slot == "L": #change direction
+            if direction != 0:
+                direction -= 1
+            else:
+                direction = 3
+    if coord[0] == 0 and coord[1] == 0:
+        return True
     return False
 
 slot_counter = 0
@@ -210,8 +227,7 @@ def call_new():
     global axiom, slot_counter, slots
     if slot_counter == len(slots):
         return
-    alpha = "F" + "F".join(slots[slot_counter])
-    axiom = "P{}".format(alpha)
+    axiom = "PF{}F".format("F".join(slots[slot_counter]))
     # print axiom
     slot_counter += 1
 
@@ -228,7 +244,7 @@ def main():
     ev = LoopingCall(draw, surface, bg_surface)
     ev.start(1.0 / 10)
     ev2 = LoopingCall(call_new)
-    ev2.start(0.01)
+    ev2.start(0.1)
     stdio.StandardIO(ChatboxProtocol())
     reactor.run()
 
