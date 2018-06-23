@@ -12,4 +12,4 @@ trace point history and eliminate on repetition except for (0,0).
 
 Example for 12 lines, 140 shapes generated:
 
-[![polygon video](https://raw.githubusercontent.com/marto1/pylsystem/master/polygon_place.jpg)](https://gfycat.com/ScalyFrankBasil)
+[![polygon video](https://raw.githubusercontent.com/marto1/pylsystem/master/polygon_holder.jpg)](https://gfycat.com/ScalyFrankBasil)
