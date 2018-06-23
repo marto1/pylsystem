@@ -70,7 +70,8 @@ def left(state, angle):
 # axiom = "PFFFRFRFLFRFFRFF" #10.3
 # axiom = "PFFFRFRFLFRFRFLFRF" #10.4
 # axiom = "PFFFRFRFFLFRFRFF" #10.5
-axiom = "PFRFFRFLFRFRFFRFLF" #10.6
+# axiom = "PFRFFRFLFRFRFFRFLF" #10.6
+axiom = "P"
 
 rules = {}
 # rules = {"R": "LFFF", "F": "FFRB"}
@@ -222,7 +223,7 @@ def filter_useless_slots(x):
     return False
 
 slot_counter = 0
-slots = list(product(" RL", repeat=11)) #10
+slots = list(product(" RL", repeat=11)) #12
 slots = filter(filter_useless_slots, slots)
 print "slots:", len(slots)
 

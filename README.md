@@ -10,6 +10,6 @@ drawing on coordinates and checking if end line lands on (0,0) and
 trace point history and eliminate on repetition except for (0,0).
 
 
-Example for 12 lines, 140 shapes generated:
+Example for 12 lines, 744 shapes generated:
 
 [![polygon video](https://raw.githubusercontent.com/marto1/pylsystem/master/polygon_holder.jpg)](https://gfycat.com/ScalyFrankBasil)
