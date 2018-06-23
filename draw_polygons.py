@@ -186,6 +186,7 @@ from itertools import product
 def filter_useless_slots(x):
     coord = [0,0] #current coordinates
     direction = 0 #of the vector
+    history = [] #all visited points without 0,0
     # directions: 0 - right
     #             1 - down
     #             2 - left
@@ -203,6 +204,9 @@ def filter_useless_slots(x):
                 coord[1] += 1
             if direction == 1:
                 coord[1] -= 1
+            if coord in history: #eliminate repeating coords
+                return False
+            history.append(list(coord))
         if slot == "R": #change direction
             if direction != 3:
                 direction +=1
