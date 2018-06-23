@@ -184,14 +184,14 @@ def draw(surface, bg_surface):
 from itertools import product
 
 def filter_useless_slots(x):
-    coord = [0,0] #current coordinates
+    coord = [1,0] #current coordinates, first step is always F 
     direction = 0 #of the vector
-    history = [] #all visited points without 0,0
+    history = [[1,0]] #all visited points without 0,0
     # directions: 0 - right
     #             1 - down
     #             2 - left
     #             3 - up
-    s = "F{}F".format("F".join(x))
+    s = "{}F".format("F".join(x)).replace(" ", "")
     # print s
     for slot in s:
         # print coord, slot
@@ -222,7 +222,7 @@ def filter_useless_slots(x):
     return False
 
 slot_counter = 0
-slots = list(product(" RL", repeat=9)) #10
+slots = list(product(" RL", repeat=11)) #10
 slots = filter(filter_useless_slots, slots)
 print "slots:", len(slots)
 
