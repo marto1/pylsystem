@@ -136,51 +136,6 @@ def draw(surface, bg_surface):
     draw_it(fordraw, surface)
     pygame.display.flip()
 
-# just draw axiom
-# def main():
-#     pygame.init()
-#     screen_width, screen_height = (1024, 600)
-#     size = (screen_width,screen_height)
-#     clock = pygame.time.Clock()
-#     pygame.display.set_caption("Generate polygons")
-#     surface = pygame.display.set_mode(size)
-#     bg_surface = pygame.Surface(size, pygame.SRCALPHA)
-#     bg_surface.fill((0, 0,0))
-#     ev = LoopingCall(draw, surface, bg_surface)
-#     ev.start(1.0 / 2)
-#     stdio.StandardIO(ChatboxProtocol())
-#     reactor.run()
-
-# randomize polygon creation
-# from random import choice, randint
-
-# def randomize():
-#     global axiom
-#     alpha = ["F"]
-#     for i in range(9):
-#         alpha.append(choice(["", "R", "L"]))
-#         alpha.append("F")
-#     alpha = "".join(alpha)
-#     axiom = "P{}".format(alpha)
-#     print axiom
-
-
-# def main():
-#     pygame.init()
-#     screen_width, screen_height = (1024, 600)
-#     size = (screen_width,screen_height)
-#     clock = pygame.time.Clock()
-#     pygame.display.set_caption("L-system generate")
-#     surface = pygame.display.set_mode(size)
-#     bg_surface = pygame.Surface(size, pygame.SRCALPHA)
-#     bg_surface.fill((0, 0,0))
-#     ev = LoopingCall(draw, surface, bg_surface)
-#     ev.start(1.0 / 2)
-#     ev2 = LoopingCall(randomize)
-#     ev2.start(0.3)
-#     stdio.StandardIO(ChatboxProtocol())
-#     reactor.run()
-
 # generate all
 from itertools import product
 
@@ -197,14 +152,8 @@ def filter_useless_slots(x):
     for slot in s:
         # print coord, slot
         if slot == "F":
-            if direction == 0:
-                coord[0] += 1
-            if direction == 2:
-                coord[0] -= 1
-            if direction == 3:
-                coord[1] += 1
-            if direction == 1:
-                coord[1] -= 1
+            a = 1 if direction in [0,3] else -1
+            coord[direction % 2] += a
             if coord in history: #eliminate repeating coords
                 return False
             history.append(list(coord))
@@ -218,12 +167,14 @@ def filter_useless_slots(x):
                 direction -= 1
             else:
                 direction = 3
+                
     if coord[0] == 0 and coord[1] == 0:
         return True
     return False
 
 slot_counter = 0
 slots = list(product(" RL", repeat=11)) #12
+print "all slots:", len(slots)
 slots = filter(filter_useless_slots, slots)
 print "slots:", len(slots)
 
